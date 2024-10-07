@@ -22,7 +22,9 @@
     "cloudfront:build:deploy:nc": "npm run client:build:deploy:nc && npm run cloudfront:invalidateCache",
     "cloudfront:update:build:deploy": "npm run cloudfront:setup && npm run cloudfront:build:deploy",
     "cloudfront:update:build:deploy:nc": "npm run cloudfront:setup && npm run cloudfront:build:deploy:nc",
-    "serverless:remove": "sls remove"
+    "serverless:remove": "sls remove",
+    "clean-and-copy": "rm -rf infra/resources/build/* && cp -R dist/* infra/resources/build",
+    "super-deploy": "npm run clean-and-copy && npm run --prefix ./infra synth && npm run --prefix ./infra deploy"
   },
   "dependencies": {
     "@emotion/react": "^11.9.3",
