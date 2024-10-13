@@ -23,8 +23,7 @@
     "cloudfront:update:build:deploy": "npm run cloudfront:setup && npm run cloudfront:build:deploy",
     "cloudfront:update:build:deploy:nc": "npm run cloudfront:setup && npm run cloudfront:build:deploy:nc",
     "serverless:remove": "sls remove",
-    "clean-and-copy": "rm -rf infra/resources/build/* && cp -R dist/* infra/resources/build",
-    "super-deploy": "npm run clean-and-copy && npm run --prefix ./infra synth && npm run --prefix ./infra deploy"
+    "infra:deploy": "cd infra && npm run deploy"
   },
   "dependencies": {
     "@emotion/react": "^11.9.3",
