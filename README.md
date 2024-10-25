@@ -1,7 +1,8 @@
-S3 static hosting: http://shop-react-redux-cloudfront-bucket-task2.s3-website.eu-north-1.amazonaws.com/ - [403 because static hosting is enabled, but access policy configured properly]
-Cloudfront endpoint deployed via Console: https://d150ye85gdwosf.cloudfront.net/ - [invalidation was used after some code changes]
+# Links
 
-Cloudfront endpoint deployed via CDK: https://d2zk7c9h9ob1ln.cloudfront.net/
+Deployed via CDK: https://d393tsl9iif6hb.cloudfront.net/
+BE repo: https://github.com/Hiblton/shop-aws-infra
+
 
 # React-shop-cloudfront
 
