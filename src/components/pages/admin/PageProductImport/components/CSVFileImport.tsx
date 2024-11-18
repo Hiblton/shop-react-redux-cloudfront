@@ -2,6 +2,7 @@ import React from "react";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import axios from "axios";
+import { useMutation } from 'react-query';
 
 type CSVFileImportProps = {
   url: string;
@@ -23,27 +24,49 @@ export default function CSVFileImport({ url, title }: CSVFileImportProps) {
     setFile(undefined);
   };
 
-  const uploadFile = async () => {
+  const uploadFileToServer = async () => {
     console.log("uploadFile to", url);
 
     // Get the presigned URL
-    const response = await axios({
-      method: "GET",
-      url,
-      params: {
-        name: encodeURIComponent(file!.name),
-      },
-    });
-    console.log("File to upload: ", file!.name);
-    console.log("Uploading to: ", response.data);
-    const result = await axios({
-      method: "PUT",
-      url: response.data?.url,
-      data: file,
-    });
-    console.log("Result: ", result);
-    setFile(undefined);
+    try {
+      const response = await axios({
+        method: "GET",
+        url,
+        headers: {
+          Authorization: window.localStorage.getItem('authorization_token') ? "Basic " + window.localStorage.getItem('authorization_token') : ''
+        },
+        params: {
+          name: encodeURIComponent(file!.name),
+        },
+      });
+
+      console.log("File to upload: ", file!.name);
+      console.log("Uploading to: ", response.data);
+
+      const result = await axios({
+        method: "PUT",
+        url: response.data?.url,
+        data: file,
+      });
+
+      console.log("Result: ", result);
+
+      return result;
+    } catch (error) {
+      throw error;
+    }
   };
+
+  const { mutate: uploadFile } = useMutation(
+    () => uploadFileToServer(),
+    {
+      onSuccess: () => {
+        console.log("File upload successful");
+        setFile(undefined);
+      }
+    }
+  );
+
   return (
     <Box>
       <Typography variant="h6" gutterBottom>
@@ -54,7 +77,7 @@ export default function CSVFileImport({ url, title }: CSVFileImportProps) {
       ) : (
         <div>
           <button onClick={removeFile}>Remove file</button>
-          <button onClick={uploadFile}>Upload file</button>
+          <button onClick={() => uploadFile()}>Upload file</button>
         </div>
       )}
     </Box>
